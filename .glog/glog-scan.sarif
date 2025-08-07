@@ -1,0 +1,1418 @@
+{
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Glog.AI",
+          "organization": "Glog.AI",
+          "fullName": "Glog, Making software more secure",
+          "version": "1.0.0",
+          "semanticVersion": "1.0.0",
+          "informationUri": "https://www.glog.ai",
+          "rules": [
+            {
+              "id": "glog-96489287-8afd-403e-b573-f0c798b22ee9",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. This function is used to allocate a block of memory dynamically. The size of this block is determined by the argument passed to the function. If the argument is a result of a multiplication, as in the provided code snippet, and one of the operands is controlled by the user or can be influenced by an attacker, an integer overflow can occur. This can lead to a smaller block of memory being allocated than expected, which in turn can lead to a buffer overflow vulnerability when this memory is used.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always validate and limit the size of the input that is used in the `malloc` function. You should also consider using functions that can handle integer overflows safely, such as `calloc`. \n\n## Source Code Fix Recommendation\n\nReplace the `malloc` function with the `calloc` function, which takes two arguments: the number of elements and the size of each element. `calloc` also initializes the allocated memory to zero.\n\n```cpp\nuint32_t* images = (uint32_t*) calloc(num_images, sizeof(uint32_t));\nif (images == NULL) {\n    // handle error\n}\n```\n\n## Library Dependencies\n\nThe code example requires the `cstdlib` library.\n\n## References\n\n- [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)\n\nPlease note that the links provided are accessible to anonymous users at the time of writing this report."
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-2359b906-1ac6-4b19-98c0-f3c8b83f49ca",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. This function is used to allocate a block of memory dynamically. The size of this block is determined by the argument passed to the function. If the argument is a result of a multiplication, as in the provided code snippet, and one of the operands is controlled by the user or can be influenced by an attacker, an integer overflow can occur. This can lead to a smaller block of memory being allocated than expected, which in turn can lead to a buffer overflow vulnerability when this memory is used.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always validate and limit the size of the input that is used in the `malloc` function. You should also consider using functions that can handle integer overflows safely, such as `calloc`. \n\n## Source Code Fix Recommendation\n\nReplace the `malloc` function with the `calloc` function, which takes two arguments: the number of elements and the size of each element. `calloc` also initializes the allocated memory to zero.\n\n```cpp\nuint32_t* images = (uint32_t*) calloc(num_images, sizeof(uint32_t));\nif (images == NULL) {\n    // handle error\n}\n```\n\n## Library Dependencies\n\nThe code example requires the `cstdlib` library.\n\n## References\n\n- [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)\n\nPlease note that the links provided are accessible to anonymous users at the time of writing this report."
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-c8cfa843-263d-4fc6-b440-6fe33a68757c",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `malloc` function in C is used to dynamically allocate memory at runtime. However, it can be a source of vulnerabilities if not used properly. If the `transfer_len` variable is controlled by the user or an attacker, it can lead to a buffer overflow or underflow. This can cause the program to crash, or worse, allow an attacker to execute arbitrary code.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always validate and sanitize user input. Never trust data coming from the user. Also, always check the return value of `malloc`. If `malloc` fails, it returns a null pointer. Using this pointer will lead to undefined behavior.\n\n## Source Code Fix Recommendation\n\nHere is a simple fix for the vulnerability:\n\n```c++\nsize_t transfer_len = /* some value */;\nif (transfer_len > MAX_TRANSFER_LEN) {\n    /* Handle error */\n} else {\n    void* buffer = malloc(transfer_len);\n    if (buffer == NULL) {\n        /* Handle error */\n    } else {\n        /* Use buffer */\n        free(buffer);\n    }\n}\n```\n\nIn this code, we first check if `transfer_len` is greater than a predefined maximum value (`MAX_TRANSFER_LEN`). If it is, we handle the error. If not, we proceed to call `malloc`. After calling `malloc`, we check if it returned a null pointer. If it did, we handle the error. If not, we use the buffer and then free it when we're done.\n\n## Library Dependencies\n\nThe `malloc` function is part of the C standard library, so no additional libraries are needed.\n\n## References\n\n- [CWE-131: Incorrect Calculation of Buffer Size](https://cwe.mitre.org/data/definitions/131.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-88d3e7b8-e562-4784-b051-d37983a2cdb2",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. This function is used to allocate a block of memory dynamically. The size of this block is determined by the argument passed to the function. If the argument is a result of a multiplication, as in the provided code snippet, and one of the operands is controlled by an attacker, it can lead to an integer overflow. This overflow can cause the `malloc` function to allocate less memory than expected, leading to a buffer overflow vulnerability when this memory is used.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always validate and limit the size of the input that is used in the `malloc` function. You should also consider using functions that can handle integer overflows safely, such as `calloc`. \n\n## Source Code Fix Recommendation\n\nReplace the `malloc` function with the `calloc` function, which initializes the allocated memory to zero and can handle integer overflows safely:\n\n```cpp\ncl_memobj **mem_objects = (cl_memobj **)calloc(num_images, sizeof(cl_memobj *));\nif (mem_objects == NULL) {\n    // handle error\n}\n```\n\n## Library Dependencies\n\nThe code example provided does not indicate any specific library dependencies. However, the `malloc` function is part of the C standard library, so the code will need to include `stdlib.h`.\n\n## OWASP and CWE Links\n\n- [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)\n- [CWE-680: Integer Overflow to Buffer Overflow](https://cwe.mitre.org/data/definitions/680.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-92fa0965-e35b-4389-927d-55c0f8cdb57d",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `malloc` function in C is used to dynamically allocate memory at runtime. However, it can be a source of vulnerabilities if not used correctly. If the size of the memory to be allocated is not properly validated or controlled, it can lead to various security issues such as buffer overflows, memory corruption, or denial of service attacks.\n\nIn the given code snippet, `malloc(sizeof(copy_asset))`, the vulnerability could arise if the size of `copy_asset` is not properly controlled or validated. This could potentially lead to the allocation of an incorrect amount of memory, leading to buffer overflows or memory corruption.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to always validate and control the size of the memory to be allocated. This can be done by checking the size of `copy_asset` before calling `malloc`. Additionally, always check the return value of `malloc` to ensure that the memory allocation was successful.\n\n## Source Code Fix Recommendation\n\nHere is a simple fix for the given code snippet:\n\n```c++\nif (sizeof(copy_asset) > 0) {\n    void* memory = malloc(sizeof(copy_asset));\n    if (memory == NULL) {\n        // Handle memory allocation failure\n    } else {\n        // Continue with program\n    }\n} else {\n    // Handle invalid size\n}\n```\n\nIn this code, we first check if the size of `copy_asset` is greater than 0. If it is, we proceed to allocate memory. After calling `malloc`, we check if the returned pointer is `NULL`. If it is, this means that the memory allocation failed, and we handle this failure accordingly.\n\n## Library Dependencies\n\nThe `malloc` function is part of the C standard library, so no additional library dependencies are required for the code example to execute properly.\n\n## References\n\n- [CWE-131: Incorrect Calculation of Buffer Size](https://cwe.mitre.org/data/definitions/131.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-0a1e64f9-a2d9-49fc-8293-680cda152716",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. `malloc` is a function that dynamically allocates memory at runtime. The problem arises when the size of the memory to be allocated is not properly validated or is influenced by an attacker, leading to a buffer overflow vulnerability. In this case, the multiplication operation `POISON_REGIONS*num_cl_mem * sizeof(cl_event)` could potentially result in an integer overflow, leading to a smaller buffer being allocated than expected. This can lead to subsequent writes to the buffer overwriting adjacent memory.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to:\n\n1. Always validate and sanitize input that will be used in memory allocation operations.\n2. Use functions that limit the amount of data written to buffers.\n3. Use modern C++ memory management techniques, such as smart pointers, which can help prevent memory-related vulnerabilities.\n\n## Source Code Fix Recommendation\n\nA potential fix for this vulnerability would be to add checks to ensure that the multiplication operation does not overflow. Here is an example of how this could be done:\n\n```cpp\n#include <climits>\n#include <stdexcept>\n\n// Check for overflow\nif (POISON_REGIONS > 0 && num_cl_mem > INT_MAX / POISON_REGIONS) {\n    throw std::overflow_error(\"Integer overflow detected\");\n}\n\n// Proceed with memory allocation\nmalloc(POISON_REGIONS*num_cl_mem * sizeof(cl_event));\n```\n\n## Library Dependencies\n\nThe code example requires the OpenCL library to execute properly.\n\n## OWASP and CWE Links\n\n- [OWASP Buffer Overflow](https://owasp.org/www-community/vulnerabilities/Buffer_Overflow)\n- [CWE-680: Integer Overflow to Buffer Overflow](https://cwe.mitre.org/data/definitions/680.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-46524caf-16df-49f1-99d7-da182ecac85a",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. This function is used to allocate a block of memory dynamically. If the size of the memory to be allocated is not properly validated, it can lead to various security issues such as buffer overflow, memory corruption, and denial of service.\n\nIn the provided code snippet, `malloc(num_cl_mem * sizeof(void*)`, the size of the memory to be allocated is determined by the product of `num_cl_mem` and `sizeof(void*)`. If `num_cl_mem` is controlled by an attacker, they can cause an integer overflow leading to a smaller block of memory being allocated than expected. This can lead to buffer overflow when trying to use the allocated memory.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always validate the size of the memory to be allocated. Ensure that the size does not exceed the maximum allowable size. Also, handle the case where `malloc` fails to allocate the requested memory.\n\n## Source Code Fix Recommendation\n\nHere is a recommended fix for the code:\n\n```cpp\n#include <climits>\n#include <cstdlib>\n\nif (num_cl_mem > INT_MAX / sizeof(void*)) {\n    // handle error\n} else {\n    void* ptr = malloc(num_cl_mem * sizeof(void*));\n    if (ptr == NULL) {\n        // handle error\n    } else {\n        // use ptr\n    }\n}\n```\n\nIn this code, we first check if `num_cl_mem` is too large by comparing it with `INT_MAX / sizeof(void*)`. If it is too large, we handle the error. Otherwise, we proceed to call `malloc`. After calling `malloc`, we check if it returned `NULL`, which indicates that it failed to allocate the requested memory. If it did, we handle the error. Otherwise, we proceed to use the allocated memory.\n\n## Library Dependencies\n\nThe code requires the following library dependencies:\n\n- `<climits>`: for `INT_MAX`\n- `<cstdlib>`: for `malloc`\n\n## References\n\n- [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-10ceba4e-6862-469b-8dc0-4f42047e1268",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc()` function in C++. This function is used to dynamically allocate a block of memory, with the size specified in bytes. The problem arises when the size of the memory to be allocated is calculated using user-supplied or untrusted data. In this case, the multiplication of `region[0]*region[1]*region[2]` could lead to an integer overflow if the values are not properly validated, which could result in a smaller block of memory being allocated than expected. This can lead to buffer overflow attacks, where an attacker can overwrite data in memory, potentially leading to code execution.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to:\n\n1. Always validate and sanitize user-supplied or untrusted data. Ensure that the values used in the multiplication cannot cause an integer overflow.\n2. Use functions that can handle memory allocation errors and integer overflows, such as `calloc()`.\n3. Consider using modern C++ features and libraries that manage memory automatically, such as smart pointers and STL containers.\n\n## Source Code Fix Recommendation\n\nA possible fix for the code could be:\n\n```cpp\nif (region[0] > 0 && region[1] > 0 && region[2] > 0) {\n    size_t size = region[0]*region[1]*region[2];\n    if (size/region[0]/region[1] == region[2]) {\n        void* ptr = malloc(size);\n        if (ptr == NULL) {\n            // handle error\n        }\n    } else {\n        // handle error\n    }\n} else {\n    // handle error\n}\n```\n\nThis code first checks if the values are greater than zero, then it calculates the size and checks for integer overflow. If there is no overflow, it proceeds with the memory allocation and checks if it was successful.\n\n## Library Dependencies\n\nThe code example requires the `cstdlib` library for the `malloc()` function.\n\n## References\n\n- [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-ce446fa4-7bd9-4a29-8742-604dc5ee444c",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `malloc` function in C is used to dynamically allocate memory at runtime. However, it can be a source of vulnerabilities if not used correctly. If the size of the memory to be allocated is not properly validated or controlled, it can lead to various security issues such as buffer overflows, memory corruption, or denial of service attacks.\n\nIn the given code snippet, `malloc(sizeof(copy_asset))`, the vulnerability could arise if the size of `copy_asset` is not properly controlled or validated. This could potentially lead to the allocation of an incorrect amount of memory, leading to buffer overflows or memory corruption.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to always validate and control the size of the memory to be allocated. This can be done by checking the size of `copy_asset` before calling `malloc`. Additionally, always check the return value of `malloc` to ensure that the memory allocation was successful.\n\n## Source Code Fix Recommendation\n\nHere is a simple fix for the given code snippet:\n\n```c++\nif (sizeof(copy_asset) > 0) {\n    void* memory = malloc(sizeof(copy_asset));\n    if (memory == NULL) {\n        // Handle memory allocation failure\n    } else {\n        // Continue with program\n    }\n} else {\n    // Handle invalid size\n}\n```\n\nIn this code, we first check if the size of `copy_asset` is greater than 0. If it is, we proceed to allocate memory. After calling `malloc`, we check if the returned pointer is `NULL`. If it is, this means that the memory allocation failed, and we handle this failure accordingly.\n\n## Library Dependencies\n\nThe `malloc` function is part of the C standard library, so no additional library dependencies are required for the code example to execute properly.\n\n## References\n\n- [CWE-131: Incorrect Calculation of Buffer Size](https://cwe.mitre.org/data/definitions/131.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-91fef5ee-e17e-4d42-be39-f405ea1b95f9",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. `malloc` is a function that dynamically allocates memory at runtime. The vulnerability arises when the size of the memory to be allocated is not properly validated or controlled, leading to potential buffer overflow attacks, memory corruption, or other unexpected behaviors.\n\nIn the provided code snippet, the size of the memory to be allocated is determined by the product of `POISON_FILL_LENGTH`, `POISON_REGIONS`, and `num_cl_mem`. If any of these variables contain malicious or unexpected values, it could lead to the aforementioned issues.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to:\n\n1. Always validate and sanitize input values before using them in memory allocation functions.\n2. Use functions that limit the size of the memory allocation to prevent buffer overflow attacks.\n3. Handle the case where `malloc` fails to allocate the requested memory. This is done by checking if the returned pointer is `NULL`.\n\n## Source Code Fix Recommendation\n\nHere is a recommended fix for the provided code snippet:\n\n```cpp\n#include <stdlib.h>\n\n// Ensure these values are validated and within expected range\nsize_t poison_fill_length = POISON_FILL_LENGTH;\nsize_t poison_regions = POISON_REGIONS;\nsize_t num_cl_mem = num_cl_mem;\n\n// Calculate the size\nsize_t size = poison_fill_length * poison_regions * num_cl_mem;\n\n// Check for integer overflow\nif(poison_fill_length != 0 && poison_regions != 0 && num_cl_mem != 0 && SIZE_MAX / poison_fill_length / poison_regions < num_cl_mem) {\n    // Handle error\n    return;\n}\n\n// Allocate memory\nvoid* ptr = malloc(size);\n\n// Check if memory allocation was successful\nif(ptr == NULL) {\n    // Handle error\n    return;\n}\n\n// Continue with program\n```\n\n## Library Dependencies\n\nThe code example requires the `stdlib.h` library for the `malloc` function.\n\n## References\n\n- [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)\n- [CWE-680: Integer Overflow to Buffer Overflow](https://cwe.mitre.org/data/definitions/680.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-161a0462-9848-4482-ba40-cf7fdc79c197",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe \"Detected Issue with C Function (malloc)\" vulnerability in C++ programming arises when the `malloc` function is used incorrectly, leading to potential memory allocation issues. Specifically, the vulnerability occurs when the size of the memory allocation is not calculated correctly, which can result in buffer overflows, memory corruption, or undefined behavior. In the provided example, `malloc(sizeof(char))` is used, which allocates memory for only a single character. If more memory is needed, this allocation will be insufficient, leading to potential vulnerabilities.\n\n### General Mitigation Advice\n\n1. **Use `new` in C++**: Prefer using C++ memory management techniques such as `new` and `delete` instead of C-style `malloc` and `free`.\n2. **Correct Size Calculation**: Ensure that the size passed to `malloc` is sufficient for the data structure you intend to store.\n3. **Check Return Values**: Always check the return value of `malloc` to ensure that memory allocation was successful.\n4. **Use Safer Alternatives**: Consider using safer alternatives like `std::vector` or `std::string` for dynamic memory management in C++.\n\n### Source Code Fix Recommendation\n\nTo fix the specific vulnerability sink, ensure that the size passed to `malloc` is correctly calculated. If you need to allocate memory for a string of characters, include the null terminator and use the correct size:\n\n```cpp\n#include <cstdlib> // Required for malloc and free\n#include <cstring> // Required for strlen\n\nint main() {\n    const char* exampleString = \"Hello, World!\";\n    size_t length = strlen(exampleString) + 1; // +1 for the null terminator\n    char* buffer = (char*)malloc(length * sizeof(char));\n\n    if (buffer == nullptr) {\n        // Handle memory allocation failure\n        return -1;\n    }\n\n    strcpy(buffer, exampleString); // Copy the string into the allocated buffer\n\n    // Use the buffer...\n\n    free(buffer); // Free the allocated memory\n    return 0;\n}\n```\n\n### Library Dependencies\n\n- `<cstdlib>`: Required for `malloc` and `free`.\n- `<cstring>`: Required for `strlen` and `strcpy`.\n\n### Relevant Links\n\n- [OWASP Top Ten](https://owasp.org/www-project-top-ten/)\n- [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/)\n- [CWE-122: Heap-based Buffer Overflow](https://cwe.mitre.org/data/definitions/122.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-0bc6dfc5-31d8-4d7c-b867-0cbe512971e0",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe \"Detected Issue with C Function (malloc)\" vulnerability in C++ arises when the `malloc` function is used improperly, leading to potential memory allocation issues such as buffer overflows, memory leaks, or undefined behavior. This vulnerability typically occurs when the size parameter passed to `malloc` is incorrect, unchecked, or derived from untrusted sources, which can result in insufficient memory allocation or excessive memory consumption.\n\n### General Mitigation Advice\n\n1. **Input Validation**: Always validate input sizes before using them in memory allocation functions.\n2. **Use Safer Alternatives**: Consider using C++ memory management features like `new` and `delete` or smart pointers (`std::unique_ptr`, `std::shared_ptr`) which provide automatic memory management.\n3. **Check Return Values**: Always check the return value of `malloc` to ensure that memory allocation was successful.\n4. **Limit Memory Usage**: Implement limits on the amount of memory that can be allocated to prevent excessive memory consumption.\n5. **Free Allocated Memory**: Ensure that all allocated memory is properly freed to prevent memory leaks.\n\n### Source Code Fix Recommendation\n\n```cpp\n#include <iostream>\n#include <cstdlib> // Required for malloc and free\n\nint main() {\n    size_t size = 10; // Example size, should be validated\n    if (size <= 0 || size > MAX_ALLOWED_SIZE) { // Validate size\n        std::cerr << \"Invalid size for memory allocation.\" << std::endl;\n        return 1;\n    }\n\n    int* ptr = (int*)malloc(size * sizeof(int));\n    if (ptr == nullptr) { // Check if malloc succeeded\n        std::cerr << \"Memory allocation failed.\" << std::endl;\n        return 1;\n    }\n\n    // Use the allocated memory\n    for (size_t i = 0; i < size; ++i) {\n        ptr[i] = i;\n    }\n\n    // Free the allocated memory\n    free(ptr);\n\n    return 0;\n}\n```\n\n### Library Dependencies\n\n- `<iostream>`: For input and output operations.\n- `<cstdlib>`: For `malloc` and `free` functions.\n\n### OWASP Resources\n\n- [OWASP Top Ten](https://owasp.org/www-project-top-ten/)\n- [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/)\n\n### Common Weakness Enumeration (CWE)\n\n- [CWE-122: Heap-based Buffer Overflow](https://cwe.mitre.org/data/definitions/122.html)\n- [CWE-401: Missing Release of Memory after Effective Lifetime](https://cwe.mitre.org/data/definitions/401.html)\n\nThese links are verified to be active and accessible to anonymous users."
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-789c14b4-391d-4c53-b30a-07928a1e74ab",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. This function is used to allocate a block of memory dynamically. The size of this block is determined by the argument passed to the function. If the argument is a product of several variables (as in the provided code snippet), there is a risk of integer overflow. This can lead to the allocation of less memory than expected, leading to buffer overflow vulnerabilities when this memory is used.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always check for potential integer overflows when calculating the size argument for `malloc`. This can be done by dividing the maximum possible value that can be held by the size variable by the size of the memory block you want to allocate. If the result is less than the number of blocks you want to allocate, then an overflow would occur.\n\n## Source Code Fix Recommendation\n\nHere is a simple fix for the provided code snippet:\n\n```cpp\nif (len && i_lim && j_lim && IMAGE_POISON_DEPTH && \n    SIZE_MAX / len / i_lim / j_lim / IMAGE_POISON_DEPTH) {\n    // If the condition is true, no overflow will occur\n    void* ptr = malloc(len * i_lim * j_lim * IMAGE_POISON_DEPTH);\n    if (!ptr) {\n        // Handle malloc failure\n    }\n} else {\n    // Handle potential overflow\n}\n```\n\n## Library Dependencies\n\nThe `malloc` function is part of the C standard library, so no additional libraries are needed for the provided code snippet.\n\n## OWASP and CWE Links\n\n- [OWASP C++ Secure Coding Practices](https://cheatsheetseries.owasp.org/cheatsheets/C-Based_Toolchain_Hardening_Cheat_Sheet.html)\n- [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)\n- [CWE-680: Integer Overflow to Buffer Overflow](https://cwe.mitre.org/data/definitions/680.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-ec32fa06-30d4-4d55-b33f-bf8404243689",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `malloc` function in C++ is used to dynamically allocate memory at runtime. However, it can be a source of vulnerabilities if not used properly. The specific vulnerability in this case is that the size of the memory to be allocated is not checked before the `malloc` function is called. This can lead to buffer overflow attacks if an attacker can control the size of the memory to be allocated.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, you should always check the size of the memory to be allocated before calling the `malloc` function. You should also consider using functions that limit the size of the memory to be allocated, such as `calloc`.\n\n## Source Code Fix Recommendation\n\nHere is a simple fix for the vulnerability:\n\n```cpp\n#include <stdlib.h>\n\n#define POISON_FILL_LENGTH 100\n\nint main() {\n    if (POISON_FILL_LENGTH > 0) {\n        void* ptr = malloc(POISON_FILL_LENGTH);\n        if (ptr == NULL) {\n            // Handle malloc failure\n        }\n        // Continue with program\n    } else {\n        // Handle invalid size\n    }\n    return 0;\n}\n```\n\nIn this code, we first check if `POISON_FILL_LENGTH` is greater than 0 before calling `malloc`. If `malloc` fails to allocate the memory, it returns `NULL` and we handle the failure.\n\n## Library Dependencies\n\nThe code example requires the `stdlib.h` library to execute properly.\n\n## OWASP Resources\n\n- [OWASP C/C++ Vulnerability Guide](https://owasp.org/www-pdf-archive/OWASP_SCP_Quick_Reference_Guide_v2.pdf)\n\n## Common Weakness Enumeration (CWE)\n\n- [CWE-131: Incorrect Calculation of Buffer Size](https://cwe.mitre.org/data/definitions/131.html)\n- [CWE-680: Integer Overflow to Buffer Overflow](https://cwe.mitre.org/data/definitions/680.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-4790dc5b-59ce-4eb4-a606-e065f1889d5c",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe vulnerability in question is related to the `malloc` function in C++. This function is used to allocate a block of memory dynamically. The vulnerability arises when the size of the memory to be allocated is calculated using user-supplied or untrusted data. This can lead to integer overflow or underflow, which in turn can lead to buffer overflow vulnerabilities, memory corruption, and potentially arbitrary code execution.\n\nIn the provided code snippet, the size of the memory to be allocated is calculated as `len * i_lim * IMAGE_POISON_HEIGHT`. If any of these variables contain untrusted data or are not properly validated, it can lead to the aforementioned issues.\n\n## Mitigation Advice\n\nTo mitigate this vulnerability, it is recommended to:\n\n1. Always validate and sanitize user-supplied or untrusted data.\n2. Use functions that can handle integer overflows and underflows, such as `CheckedMultiply()`.\n3. Consider using memory management functions that perform bounds checking, such as `calloc()`.\n4. Use modern C++ features and libraries that provide safer memory management, such as smart pointers.\n\n## Source Code Fix Recommendation\n\nA potential fix for the provided code snippet could be:\n\n```cpp\nsize_t size;\nif (__builtin_mul_overflow(len, i_lim, &size) || __builtin_mul_overflow(size, IMAGE_POISON_HEIGHT, &size)) {\n    // handle overflow\n} else {\n    void* ptr = malloc(size);\n    if (!ptr) {\n        // handle allocation failure\n    }\n}\n```\n\nThis code uses GCC's built-in functions for overflow-safe arithmetic to calculate the size of the memory to be allocated. If an overflow occurs, it is detected and handled appropriately.\n\n## Library Dependencies\n\nThe provided code snippet does not appear to have any library dependencies beyond the standard C++ library.\n\n## References\n\n- [CWE-190: Integer Overflow or Wraparound](https://cwe.mitre.org/data/definitions/190.html)\n- [CWE-680: Integer Overflow to Buffer Overflow](https://cwe.mitre.org/data/definitions/680.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-2fa7d3dd-9c4d-4849-8425-7980f36f493b",
+              "help": {
+                "text": "",
+                "markdown": "### Detected Issue with C Function (malloc) Vulnerability in C++\n\nThe vulnerability associated with the `malloc` function in C++ typically arises from improper handling of memory allocation, which can lead to buffer overflows, memory leaks, or undefined behavior. Specifically, using `malloc(log_size)` without proper validation can result in allocating insufficient memory, leading to potential security risks.\n\n### General Mitigation Advice\n\n1. **Input Validation**: Always validate the size of the memory to be allocated. Ensure that `log_size` is a positive integer and within a reasonable range.\n2. **Error Checking**: Check the return value of `malloc` to ensure that memory allocation was successful.\n3. **Use Safer Alternatives**: Consider using C++ constructs like `std::vector` or `std::unique_ptr` which handle memory management more safely.\n4. **Free Allocated Memory**: Ensure that any allocated memory is properly freed to prevent memory leaks.\n\n### Source Code Fix Recommendation\n\n```cpp\n#include <iostream>\n#include <cstdlib> // for malloc and free\n\nint main() {\n    size_t log_size = 1024; // Example size, should be validated\n\n    // Validate log_size\n    if (log_size <= 0 || log_size > SIZE_MAX) {\n        std::cerr << \"Invalid log size\" << std::endl;\n        return 1;\n    }\n\n    // Allocate memory\n    char* buffer = static_cast<char*>(malloc(log_size));\n    if (buffer == nullptr) {\n        std::cerr << \"Memory allocation failed\" << std::endl;\n        return 1;\n    }\n\n    // Use the buffer\n    // ...\n\n    // Free the allocated memory\n    free(buffer);\n\n    return 0;\n}\n```\n\n### Library Dependencies\n\n- `<iostream>`: For input and output operations.\n- `<cstdlib>`: For `malloc` and `free` functions.\n\n### Relevant Resources\n\n- [OWASP Top Ten](https://owasp.org/www-project-top-ten/)\n- [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/)\n\n### Common Weakness Enumeration (CWE)\n\n- [CWE-119: Improper Restriction of Operations within the Bounds of a Memory Buffer](https://cwe.mitre.org/data/definitions/119.html)\n- [CWE-401: Missing Release of Memory after Effective Lifetime](https://cwe.mitre.org/data/definitions/401.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-58da0376-0f92-4d91-a703-2954d67575aa",
+              "help": {
+                "text": "",
+                "markdown": "### Description\n\nThe \"Detected Issue with C Function (malloc)\" vulnerability in C++ arises when the `malloc` function is used improperly, leading to potential memory allocation issues. In the provided code snippet, `malloc(sizeof(uint32_t)` is used, which can lead to undefined behavior if not handled correctly. This vulnerability can result in memory leaks, buffer overflows, or other memory-related issues if the allocated memory is not properly managed.\n\n### General Mitigation Advice\n\n1. **Check for NULL**: Always check the return value of `malloc` to ensure that memory allocation was successful.\n2. **Use `sizeof` Correctly**: Ensure that `sizeof` is used with the correct type and that the parentheses are properly closed.\n3. **Free Allocated Memory**: Always free the allocated memory when it is no longer needed to prevent memory leaks.\n4. **Use Safer Alternatives**: Consider using C++ memory management features like `new` and `delete` or smart pointers (`std::unique_ptr`, `std::shared_ptr`) for automatic memory management.\n\n### Source Code Fix Recommendation\n\n```cpp\n#include <cstdint>\n#include <cstdlib>\n#include <iostream>\n\nint main() {\n    // Corrected malloc usage with error checking\n    uint32_t* ptr = static_cast<uint32_t*>(malloc(sizeof(uint32_t)));\n    if (ptr == nullptr) {\n        std::cerr << \"Memory allocation failed\" << std::endl;\n        return 1;\n    }\n\n    // Use the allocated memory\n    *ptr = 42;\n    std::cout << \"Value: \" << *ptr << std::endl;\n\n    // Free the allocated memory\n    free(ptr);\n\n    return 0;\n}\n```\n\n### Library Dependencies\n\n- `<cstdint>`: For fixed-width integer types like `uint32_t`.\n- `<cstdlib>`: For `malloc` and `free` functions.\n- `<iostream>`: For input and output operations.\n\n### OWASP Resources\n\n- [OWASP Top Ten](https://owasp.org/www-project-top-ten/)\n- [OWASP Secure Coding Practices](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/)\n\n### Common Weakness Enumeration (CWE)\n\n- [CWE-401: Improper Release of Memory Before Removing Last Reference ('Memory Leak')](https://cwe.mitre.org/data/definitions/401.html)\n- [CWE-476: NULL Pointer Dereference](https://cwe.mitre.org/data/definitions/476.html)"
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            },
+            {
+              "id": "glog-16ca2dc5-6e7e-45e5-b234-259090304d38",
+              "help": {
+                "text": "",
+                "markdown": "## Description\n\nThe `malloc` function in C is used to dynamically allocate memory. However, it can lead to vulnerabilities if not used properly. If the size of the memory to be allocated is not properly validated or controlled, it can lead to buffer overflow, integer overflow, or other types of memory corruption. This can potentially allow an attacker to execute arbitrary code or cause a Denial of Service (DoS) condition.\n\n## Mitigation Advice\n\n1. Always validate the size of the memory to be allocated. Avoid using user-supplied or externally-controlled values directly in the `malloc` function.\n2. Check the return value of `malloc`. If it returns `NULL`, it means that the memory allocation failed. Failing to check this can lead to Null Pointer Dereference vulnerabilities.\n3. Always free the memory allocated with `malloc` when it is no longer needed. Failing to do so can lead to memory leaks, which can consume system resources and cause the application to crash or slow down.\n\n## Source Code Fix Recommendation\n\n```c\n#include <stdlib.h>\n\ntypedef struct {\n    // your struct definition here\n} clean_these_ptrs_t;\n\nclean_these_ptrs_t* ptr = NULL;\nsize_t size = sizeof(clean_these_ptrs_t);\n\nif (size > 0) {\n    ptr = (clean_these_ptrs_t*) malloc(size);\n    if (ptr == NULL) {\n        // handle error\n    }\n} else {\n    // handle error\n}\n\n// use ptr\n\nfree(ptr); // don't forget to free the memory\n```\n\n## Library Dependencies\n\nThe code example requires the `stdlib.h` library for the `malloc` and `free` functions.\n\n## References\n\n- [CWE-131: Incorrect Calculation of Buffer Size](https://cwe.mitre.org/data/definitions/131.html)\n\nPlease note that the links provided are accessible to anonymous users at the time of writing this report."
+              },
+              "properties": {
+                "tags": [
+                  "DS161085"
+                ]
+              }
+            }
+          ],
+          "language": "en-US",
+          "contents": [
+            "localizedData",
+            "nonLocalizedData"
+          ],
+          "isComprehensive": false
+        }
+      },
+      "language": "en-US",
+      "results": [
+        {
+          "ruleId": "glog-96489287-8afd-403e-b573-f0c798b22ee9",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/cpu_check/cpu_check_cl_image.c"
+                },
+                "region": {
+                  "startLine": 230,
+                  "startColumn": 28,
+                  "endLine": 230,
+                  "endColumn": 64,
+                  "charOffset": 9479,
+                  "charLength": 36,
+                  "snippet": {
+                    "text": "malloc(num_images * sizeof(uint32_t)",
+                    "rendered": {
+                      "text": "malloc(num_images * sizeof(uint32_t)",
+                      "markdown": "`malloc(num_images * sizeof(uint32_t)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/cpu_check/cpu_check_cl_image.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 9479,
+                        "charLength": 36
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-2359b906-1ac6-4b19-98c0-f3c8b83f49ca",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/cpu_check/cpu_check_cl_image.c"
+                },
+                "region": {
+                  "startLine": 233,
+                  "startColumn": 36,
+                  "endLine": 233,
+                  "endColumn": 72,
+                  "charOffset": 9587,
+                  "charLength": 36,
+                  "snippet": {
+                    "text": "malloc(num_images * sizeof(uint32_t)",
+                    "rendered": {
+                      "text": "malloc(num_images * sizeof(uint32_t)",
+                      "markdown": "`malloc(num_images * sizeof(uint32_t)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/cpu_check/cpu_check_cl_image.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 9587,
+                        "charLength": 36
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-c8cfa843-263d-4fc6-b440-6fe33a68757c",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/cpu_check/cpu_check_cl_image.c"
+                },
+                "region": {
+                  "startLine": 165,
+                  "startColumn": 16,
+                  "endLine": 165,
+                  "endColumn": 36,
+                  "charOffset": 6990,
+                  "charLength": 20,
+                  "snippet": {
+                    "text": "malloc(transfer_len)",
+                    "rendered": {
+                      "text": "malloc(transfer_len)",
+                      "markdown": "`malloc(transfer_len)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/cpu_check/cpu_check_cl_image.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6990,
+                        "charLength": 20
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-88d3e7b8-e562-4784-b051-d37983a2cdb2",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/cpu_check/cpu_check_cl_image.c"
+                },
+                "region": {
+                  "startLine": 228,
+                  "startColumn": 33,
+                  "endLine": 228,
+                  "endColumn": 72,
+                  "charOffset": 9351,
+                  "charLength": 39,
+                  "snippet": {
+                    "text": "malloc(num_images * sizeof(cl_memobj *)",
+                    "rendered": {
+                      "text": "malloc(num_images * sizeof(cl_memobj *)",
+                      "markdown": "`malloc(num_images * sizeof(cl_memobj *)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/cpu_check/cpu_check_cl_image.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 9351,
+                        "charLength": 39
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-92fa0965-e35b-4389-927d-55c0f8cdb57d",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/universal_copy/cl_image_to_buffer.c"
+                },
+                "region": {
+                  "startLine": 128,
+                  "startColumn": 36,
+                  "endLine": 128,
+                  "endColumn": 61,
+                  "charOffset": 5148,
+                  "charLength": 25,
+                  "snippet": {
+                    "text": "malloc(sizeof(copy_asset)",
+                    "rendered": {
+                      "text": "malloc(sizeof(copy_asset)",
+                      "markdown": "`malloc(sizeof(copy_asset)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/universal_copy/cl_image_to_buffer.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5148,
+                        "charLength": 25
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-0a1e64f9-a2d9-49fc-8293-680cda152716",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/cpu_check/cpu_check_cl_mem.c"
+                },
+                "region": {
+                  "startLine": 92,
+                  "startColumn": 29,
+                  "endLine": 92,
+                  "endColumn": 80,
+                  "charOffset": 3608,
+                  "charLength": 51,
+                  "snippet": {
+                    "text": "malloc(POISON_REGIONS*num_cl_mem * sizeof(cl_event)",
+                    "rendered": {
+                      "text": "malloc(POISON_REGIONS*num_cl_mem * sizeof(cl_event)",
+                      "markdown": "`malloc(POISON_REGIONS*num_cl_mem * sizeof(cl_event)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/cpu_check/cpu_check_cl_mem.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3608,
+                        "charLength": 51
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-46524caf-16df-49f1-99d7-da182ecac85a",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/cpu_check/cpu_check_cl_mem.c"
+                },
+                "region": {
+                  "startLine": 93,
+                  "startColumn": 28,
+                  "endLine": 93,
+                  "endColumn": 61,
+                  "charOffset": 3690,
+                  "charLength": 33,
+                  "snippet": {
+                    "text": "malloc(num_cl_mem * sizeof(void*)",
+                    "rendered": {
+                      "text": "malloc(num_cl_mem * sizeof(void*)",
+                      "markdown": "`malloc(num_cl_mem * sizeof(void*)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/cpu_check/cpu_check_cl_mem.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3690,
+                        "charLength": 33
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-10ceba4e-6862-469b-8dc0-4f42047e1268",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/universal_copy/cl_image_to_buffer.c"
+                },
+                "region": {
+                  "startLine": 82,
+                  "startColumn": 26,
+                  "endLine": 82,
+                  "endColumn": 63,
+                  "charOffset": 3447,
+                  "charLength": 37,
+                  "snippet": {
+                    "text": "malloc(region[0]*region[1]*region[2])",
+                    "rendered": {
+                      "text": "malloc(region[0]*region[1]*region[2])",
+                      "markdown": "`malloc(region[0]*region[1]*region[2])`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/universal_copy/cl_image_to_buffer.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3447,
+                        "charLength": 37
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-ce446fa4-7bd9-4a29-8742-604dc5ee444c",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/universal_copy/cl_buffer_copy.c"
+                },
+                "region": {
+                  "startLine": 135,
+                  "startColumn": 36,
+                  "endLine": 135,
+                  "endColumn": 61,
+                  "charOffset": 5248,
+                  "charLength": 25,
+                  "snippet": {
+                    "text": "malloc(sizeof(copy_asset)",
+                    "rendered": {
+                      "text": "malloc(sizeof(copy_asset)",
+                      "markdown": "`malloc(sizeof(copy_asset)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/universal_copy/cl_buffer_copy.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5248,
+                        "charLength": 25
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-91fef5ee-e17e-4d42-be39-f405ea1b95f9",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/cpu_check/cpu_check_cl_mem.c"
+                },
+                "region": {
+                  "startLine": 91,
+                  "startColumn": 22,
+                  "endLine": 91,
+                  "endColumn": 76,
+                  "charOffset": 3523,
+                  "charLength": 54,
+                  "snippet": {
+                    "text": "malloc(POISON_FILL_LENGTH * POISON_REGIONS*num_cl_mem)",
+                    "rendered": {
+                      "text": "malloc(POISON_FILL_LENGTH * POISON_REGIONS*num_cl_mem)",
+                      "markdown": "`malloc(POISON_FILL_LENGTH * POISON_REGIONS*num_cl_mem)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/cpu_check/cpu_check_cl_mem.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3523,
+                        "charLength": 54
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-161a0462-9848-4482-ba40-cf7fdc79c197",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "\"Detected Issue with C Function (malloc)\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/detector/bufferOverflowDetect.c"
+                },
+                "region": {
+                  "startLine": 343,
+                  "startColumn": 26,
+                  "endLine": 343,
+                  "endColumn": 45,
+                  "charOffset": 10549,
+                  "charLength": 19,
+                  "snippet": {
+                    "text": "malloc(sizeof(char)",
+                    "rendered": {
+                      "text": "malloc(sizeof(char)",
+                      "markdown": "`malloc(sizeof(char)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/detector/bufferOverflowDetect.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 10549,
+                        "charLength": 19
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-0bc6dfc5-31d8-4d7c-b867-0cbe512971e0",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "\"Detected Issue with C Function (malloc)\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/universal_copy/cl_buffer_copy.c"
+                },
+                "region": {
+                  "startLine": 90,
+                  "startColumn": 26,
+                  "endLine": 90,
+                  "endColumn": 38,
+                  "charOffset": 3727,
+                  "charLength": 12,
+                  "snippet": {
+                    "text": "malloc(size)",
+                    "rendered": {
+                      "text": "malloc(size)",
+                      "markdown": "`malloc(size)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/universal_copy/cl_buffer_copy.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3727,
+                        "charLength": 12
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-789c14b4-391d-4c53-b30a-07928a1e74ab",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/detector/check_utils.c"
+                },
+                "region": {
+                  "startLine": 115,
+                  "startColumn": 23,
+                  "endLine": 115,
+                  "endColumn": 71,
+                  "charOffset": 4174,
+                  "charLength": 48,
+                  "snippet": {
+                    "text": "malloc(len * i_lim * j_lim * IMAGE_POISON_DEPTH)",
+                    "rendered": {
+                      "text": "malloc(len * i_lim * j_lim * IMAGE_POISON_DEPTH)",
+                      "markdown": "`malloc(len * i_lim * j_lim * IMAGE_POISON_DEPTH)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/detector/check_utils.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 4174,
+                        "charLength": 48
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-ec32fa06-30d4-4d55-b33f-bf8404243689",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/detector/check_utils.c"
+                },
+                "region": {
+                  "startLine": 242,
+                  "startColumn": 32,
+                  "endLine": 242,
+                  "endColumn": 58,
+                  "charOffset": 8390,
+                  "charLength": 26,
+                  "snippet": {
+                    "text": "malloc(POISON_FILL_LENGTH)",
+                    "rendered": {
+                      "text": "malloc(POISON_FILL_LENGTH)",
+                      "markdown": "`malloc(POISON_FILL_LENGTH)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/detector/check_utils.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 8390,
+                        "charLength": 26
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-4790dc5b-59ce-4eb4-a606-e065f1889d5c",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/detector/check_utils.c"
+                },
+                "region": {
+                  "startLine": 108,
+                  "startColumn": 24,
+                  "endLine": 108,
+                  "endColumn": 65,
+                  "charOffset": 3927,
+                  "charLength": 41,
+                  "snippet": {
+                    "text": "malloc(len * i_lim * IMAGE_POISON_HEIGHT)",
+                    "rendered": {
+                      "text": "malloc(len * i_lim * IMAGE_POISON_HEIGHT)",
+                      "markdown": "`malloc(len * i_lim * IMAGE_POISON_HEIGHT)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/detector/check_utils.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 3927,
+                        "charLength": 41
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-2fa7d3dd-9c4d-4849-8425-7980f36f493b",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "\"Detected Issue with C Function (malloc)\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/utils/cl_err.c"
+                },
+                "region": {
+                  "startLine": 207,
+                  "startColumn": 29,
+                  "endLine": 207,
+                  "endColumn": 45,
+                  "charOffset": 8170,
+                  "charLength": 16,
+                  "snippet": {
+                    "text": "malloc(log_size)",
+                    "rendered": {
+                      "text": "malloc(log_size)",
+                      "markdown": "`malloc(log_size)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/utils/cl_err.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 8170,
+                        "charLength": 16
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-58da0376-0f92-4d91-a703-2954d67575aa",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "\"Detected Issue with C Function (malloc)\""
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/gpu_check/single_buffer/single_buffer_cl_image.c"
+                },
+                "region": {
+                  "startLine": 145,
+                  "startColumn": 31,
+                  "endLine": 145,
+                  "endColumn": 54,
+                  "charOffset": 5479,
+                  "charLength": 23,
+                  "snippet": {
+                    "text": "malloc(sizeof(uint32_t)",
+                    "rendered": {
+                      "text": "malloc(sizeof(uint32_t)",
+                      "markdown": "`malloc(sizeof(uint32_t)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/gpu_check/single_buffer/single_buffer_cl_image.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 5479,
+                        "charLength": 23
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        },
+        {
+          "ruleId": "glog-16ca2dc5-6e7e-45e5-b234-259090304d38",
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Detected Vulnerability in C Function (malloc)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/detector/check_utils.c"
+                },
+                "region": {
+                  "startLine": 179,
+                  "startColumn": 35,
+                  "endLine": 179,
+                  "endColumn": 68,
+                  "charOffset": 6218,
+                  "charLength": 33,
+                  "snippet": {
+                    "text": "malloc(sizeof(clean_these_ptrs_t)",
+                    "rendered": {
+                      "text": "malloc(sizeof(clean_these_ptrs_t)",
+                      "markdown": "`malloc(sizeof(clean_these_ptrs_t)`"
+                    }
+                  },
+                  "sourceLanguage": "c"
+                }
+              }
+            }
+          ],
+          "fixes": [
+            {
+              "description": {
+                "text": "If the value provided to malloc is the result of unsafe integer math, it can result in an exploitable condition. "
+              },
+              "artifactChanges": [
+                {
+                  "artifactLocation": {
+                    "uri": "src/detector/check_utils.c"
+                  },
+                  "replacements": [
+                    {
+                      "deletedRegion": {
+                        "charOffset": 6218,
+                        "charLength": 33
+                      },
+                      "insertedContent": {
+                        "text": "calloc(<number of elements>, <size of each element>)"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "DevSkimSeverity": "BestPractice",
+            "DevSkimConfidence": "High",
+            "tags": [
+              "API.DangerousAPI.ProblematicFunction"
+            ]
+          }
+        }
+      ],
+      "newlineSequences": [
+        "\r\n",
+        "\n"
+      ]
+    }
+  ]
+}
